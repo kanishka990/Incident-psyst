@@ -29,3 +29,18 @@
   border: none;
   border-radius: 6px;
 }
+
+.error{
+  color:red;
+  font-size:14px;
+}
+
+.logout-btn{
+  margin-top:15px;
+  background:#dc3545;
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+}
