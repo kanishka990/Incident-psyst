@@ -1,0 +1,73 @@
+.customer-container {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  padding: 40px;
+  color: white;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-card {
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: linear-gradient(90deg, #ff6a00, #ee0979);
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.incident-list {
+  margin-top: 30px;
+  display: grid;
+  gap: 15px;
+}
+
+.incident-card {
+  background: white;
+  color: black;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.severity-LOW { background: #28a745; color: white; }
+.severity-MEDIUM { background: #ffc107; color: black; }
+.severity-HIGH { background: #fd7e14; color: white; }
+.severity-CRITICAL { background: #dc3545; color: white; }
+
+.status-OPEN { background: #007bff; color: white; }
+.status-IN_PROGRESS { background: #17a2b8; color: white; }
+.status-RESOLVED { background: #28a745; color: white; }

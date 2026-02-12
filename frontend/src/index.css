@@ -1,0 +1,90 @@
+.report-container {
+  padding: 40px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.report-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.report-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.meta-box {
+  background: #5fa8d3;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  width: 48%;
+  text-align: center;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.report-table th {
+  background: #ff7f50;
+  color: white;
+  padding: 10px;
+}
+
+.report-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.report-table tr:hover {
+  background: #f1f1f1;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.btn {
+  padding: 6px 12px;
+  margin: 4px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn-create { background: #007bff; color: white; }
+.btn-save { background: #28a745; color: white; }
+.btn-edit { background: #ffc107; color: black; }
+.btn-delete { background: #dc3545; color: white; }
+.btn-cancel { background: gray; color: white; }
+
+.form-box {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+/* Status Colors */
+.status-OPEN { background: #007bff; }
+.status-IN_PROGRESS { background: #ffc107; color: black; }
+.status-RESOLVED { background: #28a745; }
+
+/* Severity Colors */
+.severity-LOW { background: #28a745; }
+.severity-MEDIUM { background: #ffc107; color: black; }
+.severity-HIGH { background: #fd7e14; }
+.severity-CRITICAL { background: #dc3545; }

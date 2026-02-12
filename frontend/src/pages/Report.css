@@ -1,0 +1,129 @@
+.report-container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+  background: linear-gradient(180deg, #0f1724 0%, #091026 100%);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(2,6,23,0.7);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #e6eef6;
+}
+
+.report-title {
+  margin: 0 0 20px 0;
+  font-size: 1.6rem;
+  color: #e6eef6;
+}
+
+.report-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.meta-box {
+  background: rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #cfe6ff;
+}
+
+.meta-box h3 {
+  margin: 0 0 6px 0;
+  font-size: 0.95rem;
+}
+
+.meta-box p {
+  margin: 0;
+  color: #a9c9ff;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.report-table th,
+.report-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  text-align: left;
+  color: #dbeafe;
+}
+
+.report-table th {
+  background: rgba(255,255,255,0.02);
+  font-weight: 700;
+  color: #a8d0ff;
+}
+
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  color: #9fb8e8;
+}
+
+.actions-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg,#2563eb,#7c3aed);
+  color: white;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+/* Badge styles for status/severity */
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.status-OPEN { background: #ef4444; }
+.status-IN_PROGRESS { background: #f59e0b; }
+.status-RESOLVED { background: #10b981; }
+.status-null { background: #64748b; }
+
+.severity-LOW { background: #10b981; }
+.severity-MEDIUM { background: #f59e0b; }
+.severity-HIGH { background: #ef4444; }
+.severity-CRITICAL { background: #7f1d1d; }
+
+@media (max-width: 800px) {
+  .report-container {
+    margin: 12px;
+    padding: 14px;
+  }
+
+  .report-meta {
+    flex-direction: column;
+  }
+
+  .report-table th,
+  .report-table td {
+    padding: 10px 8px;
+  }
+}
