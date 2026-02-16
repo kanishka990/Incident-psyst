@@ -3,18 +3,21 @@ import api from "../services/api";
 import "./CustomerReportIssue.css";
 
 export default function CustomerReportIssue() {
+
   const [issues, setIssues] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+
   const [customerName, setCustomerName] = useState(
     localStorage.getItem("customerName") || ""
   );
 
   const [formData, setFormData] = useState({
-    title: "",
+    subject: "",
     description: "",
     severity: "MEDIUM",
   });
@@ -23,19 +26,20 @@ export default function CustomerReportIssue() {
     loadIssues();
   }, []);
 
+  // LOAD DATA
   const loadIssues = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/incidents");
-      setIssues(response.data || []);
+      const res = await api.get("/incidents");
+      setIssues(res.data || []);
     } catch (err) {
       setError("Failed to load issues");
-      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  // INPUT HANDLER
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -47,151 +51,148 @@ export default function CustomerReportIssue() {
     localStorage.setItem("customerName", name);
   };
 
+  // CREATE TICKET
   const handleReportIssue = async (e) => {
     e.preventDefault();
 
     if (!customerName.trim()) {
-      setError("Please enter your name first");
+      setError("Please enter your name");
       return;
     }
 
-    if (!formData.title.trim()) {
-      setError("Issue title is required");
+    if (!formData.subject.trim()) {
+      setError("Subject is required");
       return;
     }
 
     try {
-      const response = await api.post("/incidents/value", {
-        title: formData.title,
+      const res = await api.post("/incidents", {
+        subject: formData.subject,
         description: `[Customer: ${customerName}] ${formData.description}`,
         severity: formData.severity,
-        status: "OPEN",
+        status: "PENDING",
       });
 
-      setIssues([response.data, ...issues]);
+      setIssues([res.data, ...issues]);
+
       setFormData({
-        title: "",
+        subject: "",
         description: "",
         severity: "MEDIUM",
       });
+
       setShowForm(false);
       setError(null);
-    } catch (err) {
-      setError("Failed to report issue");
-      console.error(err);
+
+    } catch {
+      setError("Failed to submit issue");
     }
   };
 
+  // STATUS COLOR
   const getStatusColor = (status) => {
     const colors = {
-      OPEN: "#dc3545",
-      IN_PROGRESS: "#0d6efd",
-      RESOLVED: "#198754",
+      PENDING: "#f59e0b",
+      IN_PROGRESS: "#3b82f6",
+      COMPLETED: "#22c55e",
+      CLOSED: "#6b7280",
     };
-    return colors[status] || "#6c757d";
+    return colors[status] || "#999";
   };
 
+  // SEVERITY COLOR
   const getSeverityColor = (severity) => {
     const colors = {
-      CRITICAL: "#dc3545",
-      HIGH: "#fd7e14",
-      MEDIUM: "#ffc107",
-      LOW: "#20c997",
+      LOW: "#22c55e",
+      MEDIUM: "#f59e0b",
+      HIGH: "#ef4444",
+      CRITICAL: "#b91c1c",
     };
-    return colors[severity] || "#6c757d";
+    return colors[severity];
   };
 
-  const filteredIssues = issues.filter((issue) => {
-    const matchesSearch =
-      issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      issue.description?.toLowerCase().includes(searchTerm.toLowerCase());
+  // FILTER
+  const filteredIssues = issues.filter((i) => {
+    const matchSearch =
+      i.subject?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      i.description?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = !statusFilter || issue.status === statusFilter;
+    const matchStatus =
+      !statusFilter || i.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
+    return matchSearch && matchStatus;
   });
 
   if (loading) {
-    return (
-      <div className="customer-page">
-        <div className="loading">Loading your issues...</div>
-      </div>
-    );
+    return <div className="loading">Loading Tickets...</div>;
   }
 
   return (
     <div className="customer-page">
-      {/* Header */}
+
+      {/* HEADER */}
       <div className="customer-header">
-        <div className="header-content">
-          <h1>📋 Report an Issue</h1>
-          <p>Let us know if you're experiencing any problems</p>
-        </div>
+        <h1>🎫 Customer Ticket Portal</h1>
+        <p>Create and track your support tickets</p>
       </div>
 
-      {/* Customer Name Input */}
+      {/* CUSTOMER INFO */}
       <div className="customer-info-section">
-        <div className="info-box">
-          <label>Your Name *</label>
-          <input
-            type="text"
-            value={customerName}
-            onChange={handleCustomerNameChange}
-            placeholder="Enter your name"
-            className="customer-name-input"
-          />
-          <span className="info-text">This will be recorded with all your issues</span>
-        </div>
+        <label>Your Name *</label>
+        <input
+          value={customerName}
+          onChange={handleCustomerNameChange}
+          placeholder="Enter your name"
+          className="customer-name-input"
+        />
       </div>
 
-      {/* Error Message */}
       {error && <div className="error-banner">{error}</div>}
 
-      {/* Toolbar */}
+      {/* TOOLBAR */}
       <div className="toolbar">
-        <div className="search-filter-group">
-          <input
-            type="text"
-            placeholder="🔍 Search your issues..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
 
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="filter-select"
-          >
-            <option value="">All Status</option>
-            <option value="OPEN">Open</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="RESOLVED">Resolved</option>
-          </select>
-        </div>
+        <input
+          className="search-input"
+          placeholder="🔍 Search tickets..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        <select
+          className="filter-select"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="">All Status</option>
+          <option value="PENDING">Pending</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="CLOSED">Closed</option>
+        </select>
 
         <button
-          onClick={() => setShowForm(!showForm)}
           className="btn btn-primary"
+          onClick={() => setShowForm(!showForm)}
         >
-          {showForm ? "Cancel" : "+ Report New Issue"}
+          {showForm ? "Cancel" : "+ New Ticket"}
         </button>
       </div>
 
-      {/* Report Form */}
+      {/* FORM */}
       {showForm && (
         <div className="form-card">
-          <h2>Report New Issue</h2>
+          <h2>Create Ticket</h2>
+
           <form onSubmit={handleReportIssue}>
+
             <div className="form-group">
-              <label>Issue Title *</label>
+              <label>Subject *</label>
               <input
-                type="text"
-                name="title"
-                value={formData.title}
+                name="subject"
+                value={formData.subject}
                 onChange={handleInputChange}
-                placeholder="e.g., Cannot login to account"
-                required
+                placeholder="Ticket Subject"
               />
             </div>
 
@@ -201,117 +202,69 @@ export default function CustomerReportIssue() {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder="Describe the issue in detail..."
-                rows="4"
-              ></textarea>
+                placeholder="Describe issue..."
+              />
             </div>
 
             <div className="form-group">
-              <label>Severity *</label>
+              <label>Severity</label>
               <select
                 name="severity"
                 value={formData.severity}
                 onChange={handleInputChange}
               >
-                <option value="LOW">🟢 Low - Minor issue, no rush</option>
-                <option value="MEDIUM">🟡 Medium - Affects some features</option>
-                <option value="HIGH">🟠 High - Major functionality broken</option>
-                <option value="CRITICAL">🔴 Critical - System down</option>
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+                <option value="CRITICAL">CRITICAL</option>
               </select>
             </div>
 
             <button type="submit" className="btn btn-success">
-              Submit Issue
+              Submit Ticket
             </button>
+
           </form>
         </div>
       )}
 
-      {/* Issues List */}
+      {/* TICKETS */}
       <div className="issues-section">
-        <h2>Your Reported Issues ({filteredIssues.length})</h2>
+        <h2>Your Tickets ({filteredIssues.length})</h2>
 
-        {filteredIssues.length === 0 ? (
-          <div className="empty-state">
-            <p>✨ No issues reported yet</p>
-            <small>Click "Report New Issue" to get started</small>
-          </div>
-        ) : (
-          <div className="issues-list">
-            {filteredIssues.map((issue) => (
-              <div key={issue.id} className="issue-card">
-                <div className="issue-header">
-                  <div className="issue-title-section">
-                    <h3>#{issue.id} - {issue.title}</h3>
-                    <div className="badges">
-                      <span
-                        className="badge badge-severity"
-                        style={{ backgroundColor: getSeverityColor(issue.severity) }}
-                      >
-                        {issue.severity}
-                      </span>
-                      <span
-                        className="badge badge-status"
-                        style={{ backgroundColor: getStatusColor(issue.status) }}
-                      >
-                        {issue.status === "OPEN"
-                          ? "🔴 Open"
-                          : issue.status === "IN_PROGRESS"
-                          ? "🔵 In Progress"
-                          : "✅ Resolved"}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="issue-date">
-                    {new Date(issue.created_at).toLocaleDateString()}
-                  </div>
-                </div>
+        <div className="issues-list">
+          {filteredIssues.map((issue) => (
+            <div key={issue.id} className="issue-card">
 
-                <div className="issue-description">
-                  <p>{issue.description}</p>
-                </div>
+              <h3>{issue.subject}</h3>
 
-                <div className="issue-footer">
-                  <small>
-                    Created: {new Date(issue.created_at).toLocaleString()}
-                  </small>
-                  {issue.updated_at !== issue.created_at && (
-                    <small>
-                      Updated: {new Date(issue.updated_at).toLocaleString()}
-                    </small>
-                  )}
-                </div>
+              <div className="badges">
+                <span
+                  className="badge"
+                  style={{ backgroundColor: getSeverityColor(issue.severity) }}
+                >
+                  {issue.severity}
+                </span>
+
+                <span
+                  className="badge"
+                  style={{ backgroundColor: getStatusColor(issue.status) }}
+                >
+                  {issue.status}
+                </span>
               </div>
-            ))}
-          </div>
-        )}
+
+              <p>{issue.description}</p>
+
+              <small>
+                Created: {new Date(issue.created_at).toLocaleString()}
+              </small>
+
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Stats */}
-      <div className="stats-section">
-        <div className="stat-box">
-          <h3>{filteredIssues.length}</h3>
-          <p>Total Issues</p>
-        </div>
-        <div className="stat-box">
-          <h3>
-            {filteredIssues.filter((i) => i.status === "OPEN").length}
-          </h3>
-          <p>Open</p>
-        </div>
-        <div className="stat-box">
-          <h3>
-            {filteredIssues.filter((i) => i.status === "IN_PROGRESS").length}
-          </h3>
-          <p>In Progress</p>
-        </div>
-        <div className="stat-box">
-          <h3>
-            {filteredIssues.filter((i) => i.status === "RESOLVED").length}
-          </h3>
-          <p>Resolved</p>
-        </div>
-      </div>
     </div>
   );
 }

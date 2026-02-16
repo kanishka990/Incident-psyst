@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import "./Report.css";
 
-
 export default function CustomerIncidentManagement() {
+
   const [incidents, setIncidents] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
-    title: "",
+    subject: "",
     description: "",
     severity: "MEDIUM",
   });
@@ -18,14 +18,20 @@ export default function CustomerIncidentManagement() {
     loadIncidents();
   }, []);
 
+  // LOAD INCIDENTS
   const loadIncidents = async () => {
-    const res = await api.get("/incidents");
-    setIncidents(res.data);
+    try {
+      const res = await api.get("/incidents");
+      setIncidents(res.data);
+    } catch {
+      setError("Failed to load tickets");
+    }
   };
 
-  // ✅ CREATE
+  // CREATE TICKET
   const handleCreate = async (e) => {
     e.preventDefault();
+
     try {
       const res = await api.post("/incidents", formData);
       setIncidents([res.data, ...incidents]);
@@ -35,9 +41,10 @@ export default function CustomerIncidentManagement() {
     }
   };
 
-  // ✅ UPDATE (Customer can edit title & description)
+  // UPDATE TICKET
   const handleUpdate = async (e) => {
     e.preventDefault();
+
     try {
       const res = await api.put(`/incidents/${editingId}`, formData);
 
@@ -53,26 +60,22 @@ export default function CustomerIncidentManagement() {
     }
   };
 
-  // ✅ DELETE
+  // DELETE TICKET
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this incident?")) return;
+    if (!window.confirm("Delete this ticket?")) return;
 
     try {
       await api.delete(`/incidents/${id}`);
-      setIncidents(
-        incidents.filter((i) => i.id !== id)
-    );
-        
-    
-    } catch (err){
-      console.error(err);
+      setIncidents(incidents.filter((i) => i.id !== id));
+    } catch {
       setError("Delete failed");
     }
   };
 
+  // RESET FORM
   const resetForm = () => {
     setFormData({
-      title: "",
+      subject: "",
       description: "",
       severity: "MEDIUM",
     });
@@ -82,22 +85,25 @@ export default function CustomerIncidentManagement() {
 
   return (
     <div className="report-container">
-      <h1>Customer Incident Portal</h1>
+
+      <h1>🎫 Customer Ticket Portal</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
+      {/* CREATE / UPDATE FORM */}
       <form onSubmit={editingId ? handleUpdate : handleCreate}>
+
         <input
-          placeholder="Issue Title"
-          value={formData.title}
+          placeholder="Ticket Subject"
+          value={formData.subject}
           onChange={(e) =>
-            setFormData({ ...formData, title: e.target.value })
+            setFormData({ ...formData, subject: e.target.value })
           }
           required
         />
 
         <textarea
-          placeholder="Issue Description"
+          placeholder="Ticket Description"
           value={formData.description}
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
@@ -117,24 +123,53 @@ export default function CustomerIncidentManagement() {
         </select>
 
         <button className="btn btn-save">
-          {editingId ? "Update" : "Create"}
+          {editingId ? "Update Ticket" : "Create Ticket"}
         </button>
       </form>
 
       <hr />
 
+      {/* TICKET LIST */}
       {incidents.map((incident) => (
         <div key={incident.id} className="card">
-          <h3>{incident.title}</h3>
-          <p>{incident.description}</p>
-          <p>Status: {incident.status}</p>
 
+          <div className="card-header">
+            <h3>{incident.subject}</h3>
+
+            <span className={`status ${incident.status}`}>
+              {incident.status}
+            </span>
+          </div>
+
+          <p><strong>Request ID:</strong> {incident.request_id}</p>
+
+          <p><strong>Description:</strong> {incident.description}</p>
+
+          <p>
+            <strong>Severity:</strong> {incident.severity}
+          </p>
+
+          <p>
+            <strong>Created:</strong>{" "}
+            {incident.created_date
+              ? new Date(incident.created_date).toLocaleString()
+              : "-"}
+          </p>
+
+          {incident.closed_date && (
+            <p>
+              <strong>Closed:</strong>{" "}
+              {new Date(incident.closed_date).toLocaleString()}
+            </p>
+          )}
+
+          {/* BUTTONS */}
           <button
             className="btn btn-edit"
             onClick={() => {
               setEditingId(incident.id);
               setFormData({
-                title: incident.title,
+                subject: incident.subject,
                 description: incident.description,
                 severity: incident.severity,
               });
@@ -149,8 +184,10 @@ export default function CustomerIncidentManagement() {
           >
             Delete
           </button>
+
         </div>
       ))}
+
     </div>
   );
 }

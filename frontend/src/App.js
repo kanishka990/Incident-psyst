@@ -4,6 +4,13 @@ import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import CustomerIncidentManagement from "./pages/CustomerIncidentManagement";
 import DeveloperIncidentManagement from "./pages/DeveloperIncidentManagement";
+import CustomerReportIssue from "./pages/CustomerReportIssue";
+import InternalDashboard from "./pages/InternalDashboard";
+import Services from "./pages/Services";
+import Updates from "./pages/Updates";
+import Incidents from "./pages/Incidents";
+import PublicStatusPage from "./pages/PublicStatusPage";
+import Navbar from "./components/Navbar";
 
 function App() {
   const { isAuthenticated, role } = useSelector((state) => state.auth);

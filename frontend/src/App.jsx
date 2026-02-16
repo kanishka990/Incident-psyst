@@ -11,6 +11,7 @@ import CustomerReportIssue from "./pages/CustomerReportIssue";
 import CustomerIncidentManagement from "./pages/CustomerIncidentManagement";
 import DeveloperIncidentManagement from "./pages/DeveloperIncidentManagement";
 import Navbar from "./components/Navbar";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/internal-dashboard" element={<InternalDashboard />} />
         <Route path="/customer-report" element={<CustomerReportIssue />} />
         <Route path="/developer-incidents" element={<DeveloperIncidentManagement />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   );

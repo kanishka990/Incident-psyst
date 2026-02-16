@@ -1,3 +1,11 @@
+/* ================================
+   REPORT / DEVELOPER DASHBOARD
+================================ */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .report-container {
   max-width: 1100px;
   margin: 30px auto;
@@ -14,6 +22,10 @@
   font-size: 1.6rem;
   color: #e6eef6;
 }
+
+/* ================================
+   META INFO
+================================ */
 
 .report-meta {
   display: flex;
@@ -40,6 +52,10 @@
   color: #a9c9ff;
 }
 
+/* ================================
+   TABLE
+================================ */
+
 .report-table {
   width: 100%;
   border-collapse: collapse;
@@ -55,6 +71,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.03);
   text-align: left;
   color: #dbeafe;
+  font-size: 13px;
 }
 
 .report-table th {
@@ -63,11 +80,19 @@
   color: #a8d0ff;
 }
 
+/* ================================
+   EMPTY STATE
+================================ */
+
 .empty-state {
   padding: 24px;
   text-align: center;
   color: #9fb8e8;
 }
+
+/* ================================
+   ACTION BUTTONS
+================================ */
 
 .actions-row {
   display: flex;
@@ -80,6 +105,26 @@
   border: none;
   cursor: pointer;
   font-weight: 600;
+  font-size: 12px;
+  transition: transform 0.15s ease;
+}
+
+/* REMOVE CLICK COLORS */
+.btn:focus,
+.btn:active,
+.btn:focus-visible,
+input:focus,
+select:focus,
+textarea:focus,
+.report-table th:focus,
+.report-table td:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* SMALL CLICK EFFECT */
+.btn:active {
+  transform: scale(0.98);
 }
 
 .btn-primary {
@@ -92,7 +137,10 @@
   color: white;
 }
 
-/* Badge styles for status/severity */
+/* ================================
+   BADGES
+================================ */
+
 .badge {
   display: inline-block;
   padding: 6px 10px;
@@ -102,17 +150,26 @@
   color: white;
 }
 
-.status-OPEN { background: #ef4444; }
-.status-IN_PROGRESS { background: #f59e0b; }
-.status-RESOLVED { background: #10b981; }
-.status-null { background: #64748b; }
+/* STATUS COLORS */
+
+.status-PENDING { background: #f59e0b; }
+.status-IN_PROGRESS { background: #3b82f6; }
+.status-COMPLETED { background: #10b981; }
+.status-CLOSED { background: #64748b; }
+
+/* SEVERITY COLORS */
 
 .severity-LOW { background: #10b981; }
 .severity-MEDIUM { background: #f59e0b; }
 .severity-HIGH { background: #ef4444; }
 .severity-CRITICAL { background: #7f1d1d; }
 
+/* ================================
+   RESPONSIVE
+================================ */
+
 @media (max-width: 800px) {
+
   .report-container {
     margin: 12px;
     padding: 14px;
@@ -125,5 +182,42 @@
   .report-table th,
   .report-table td {
     padding: 10px 8px;
+    font-size: 12px;
   }
 }
+
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+  gap: 12px;
+}
+
+.ticket-card {
+  background: #111827;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.ticket-card:hover {
+  transform: translateY(-3px);
+}
+
+.details-box {
+  margin-top: 20px;
+  background: #0b1220;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.priority-P1 { background:#ef4444; }
+.priority-P2 { background:#f59e0b; }
+.priority-P3 { background:#10b981; }
+
