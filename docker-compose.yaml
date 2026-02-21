@@ -6,7 +6,7 @@ services:
     container_name: incident_postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: test123
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: incidentdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
