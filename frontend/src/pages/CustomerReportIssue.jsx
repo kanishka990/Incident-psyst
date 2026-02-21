@@ -11,6 +11,8 @@ export default function CustomerReportIssue() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
+  const [severityFilter, setSeverityFilter] = useState("");
 
   const [customerName, setCustomerName] = useState(
     localStorage.getItem("customerName") || ""
@@ -20,6 +22,7 @@ export default function CustomerReportIssue() {
     subject: "",
     description: "",
     severity: "MEDIUM",
+    priority: "P2",
   });
 
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function CustomerReportIssue() {
         subject: formData.subject,
         description: `[Customer: ${customerName}] ${formData.description}`,
         severity: formData.severity,
+        priority: formData.priority,
         status: "PENDING",
       });
 
@@ -79,6 +83,7 @@ export default function CustomerReportIssue() {
         subject: "",
         description: "",
         severity: "MEDIUM",
+        priority: "P2",
       });
 
       setShowForm(false);
@@ -108,19 +113,41 @@ export default function CustomerReportIssue() {
       HIGH: "#ef4444",
       CRITICAL: "#b91c1c",
     };
-    return colors[severity];
+    return colors[severity] || "#999";
+  };
+
+  // PRIORITY COLOR
+  const getPriorityColor = (priority) => {
+    const colors = {
+      P1: "#dc2626",
+      P2: "#f59e0b",
+      P3: "#22c55e",
+    };
+    return colors[priority] || "#999";
+  };
+
+  // PRIORITY LABEL
+  const getPriorityLabel = (priority) => {
+    const labels = {
+      P1: "PriorityLevel1",
+      P2: "PriorityLevel2",
+      P3: "PriorityLevel3",
+    };
+    return labels[priority] || priority;
   };
 
   // FILTER
   const filteredIssues = issues.filter((i) => {
     const matchSearch =
       i.subject?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      i.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      i.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      i.user_email?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchStatus =
-      !statusFilter || i.status === statusFilter;
+    const matchStatus = !statusFilter || i.status === statusFilter;
+    const matchPriority = !priorityFilter || i.priority === priorityFilter;
+    const matchSeverity = !severityFilter || i.severity === severityFilter;
 
-    return matchSearch && matchStatus;
+    return matchSearch && matchStatus && matchPriority && matchSeverity;
   });
 
   if (loading) {
@@ -171,6 +198,29 @@ export default function CustomerReportIssue() {
           <option value="CLOSED">Closed</option>
         </select>
 
+        <select
+          className="filter-select"
+          value={priorityFilter}
+          onChange={(e) => setPriorityFilter(e.target.value)}
+        >
+          <option value="">All Priority</option>
+          <option value="P1">PriorityLevel1</option>
+          <option value="P2">PriorityLevel2</option>
+          <option value="P3">PriorityLevel3</option>
+        </select>
+
+        <select
+          className="filter-select"
+          value={severityFilter}
+          onChange={(e) => setSeverityFilter(e.target.value)}
+        >
+          <option value="">All Severity</option>
+          <option value="LOW">Low</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="HIGH">High</option>
+          <option value="CRITICAL">Critical</option>
+        </select>
+
         <button
           className="btn btn-primary"
           onClick={() => setShowForm(!showForm)}
@@ -206,18 +256,33 @@ export default function CustomerReportIssue() {
               />
             </div>
 
-            <div className="form-group">
-              <label>Severity</label>
-              <select
-                name="severity"
-                value={formData.severity}
-                onChange={handleInputChange}
-              >
-                <option value="LOW">LOW</option>
-                <option value="MEDIUM">MEDIUM</option>
-                <option value="HIGH">HIGH</option>
-                <option value="CRITICAL">CRITICAL</option>
-              </select>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Severity</label>
+                <select
+                  name="severity"
+                  value={formData.severity}
+                  onChange={handleInputChange}
+                >
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="HIGH">High</option>
+                  <option value="CRITICAL">Critical</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Priority</label>
+                <select
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleInputChange}
+                >
+                  <option value="P1">PriorityLevel1</option>
+                  <option value="P2">PriorityLevel2</option>
+                  <option value="P3">PriorityLevel3</option>
+                </select>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-success">
@@ -228,40 +293,83 @@ export default function CustomerReportIssue() {
         </div>
       )}
 
-      {/* TICKETS */}
-      <div className="issues-section">
+      {/* TICKETS TABLE */}
+      <div className="tickets-section">
         <h2>Your Tickets ({filteredIssues.length})</h2>
 
-        <div className="issues-list">
-          {filteredIssues.map((issue) => (
-            <div key={issue.id} className="issue-card">
-
-              <h3>{issue.subject}</h3>
-
-              <div className="badges">
-                <span
-                  className="badge"
-                  style={{ backgroundColor: getSeverityColor(issue.severity) }}
-                >
-                  {issue.severity}
-                </span>
-
-                <span
-                  className="badge"
-                  style={{ backgroundColor: getStatusColor(issue.status) }}
-                >
-                  {issue.status}
-                </span>
-              </div>
-
-              <p>{issue.description}</p>
-
-              <small>
-                Created: {new Date(issue.created_at).toLocaleString()}
-              </small>
-
-            </div>
-          ))}
+        <div className="table-container">
+          <table className="tickets-table">
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Created Date</th>
+                <th>Created By</th>
+                <th>Closed Date</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Assignee</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredIssues.length === 0 ? (
+                <tr>
+                  <td colSpan="9" className="no-data">No tickets found</td>
+                </tr>
+              ) : (
+                filteredIssues.map((issue) => (
+                  <tr key={issue.id}>
+                    <td className="ticket-id">#{issue.id}</td>
+                    <td className="date-cell">
+                      {issue.created_at ? new Date(issue.created_at).toLocaleString() : "N/A"}
+                    </td>
+                    <td className="created-by-cell">
+                      <div className="user-info">
+                        <span className="user-name">{issue.user_name || "Unknown"}</span>
+                        <span className="user-email">{issue.user_email || "N/A"}</span>
+                      </div>
+                    </td>
+                    <td className="subject-cell">{issue.subject}</td>
+                    <td className="description-cell">
+                      <div className="description-text">
+                        {issue.description?.substring(0, 100)}
+                        {issue.description?.length > 100 ? "..." : ""}
+                      </div>
+                    </td>
+                    <td>
+                      <span 
+                        className="priority-badge"
+                        style={{ backgroundColor: getPriorityColor(issue.priority) }}
+                      >
+                        {getPriorityLabel(issue.priority)}
+                      </span>
+                    </td>
+                    <td>
+                      <span 
+                        className="severity-badge"
+                        style={{ backgroundColor: getSeverityColor(issue.severity) }}
+                      >
+                        {issue.severity}
+                      </span>
+                    </td>
+                    <td>
+                      <span 
+                        className="status-badge"
+                        style={{ backgroundColor: getStatusColor(issue.status) }}
+                      >
+                        {issue.status}
+                      </span>
+                    </td>
+                    <td className="date-cell">
+                      {issue.closed_at ? new Date(issue.closed_at).toLocaleString() : "—"}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 

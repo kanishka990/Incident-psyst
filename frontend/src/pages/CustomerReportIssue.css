@@ -1,14 +1,14 @@
-/* Customer Report Issue Page Styles */
+/* ===== CUSTOMER TICKETING PAGE ===== */
 
 .customer-page {
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #f5f7fa;
   padding-bottom: 40px;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 .customer-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
   color: white;
   padding: 60px 30px;
   text-align: center;
@@ -17,409 +17,336 @@
 
 .header-content h1 {
   margin: 0 0 10px;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: 700;
 }
 
 .header-content p {
   margin: 0;
-  font-size: 1.1rem;
-  opacity: 0.95;
+  opacity: 0.9;
 }
 
-/* Customer Info Section */
-.customer-info-section {
-  padding: 0 30px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.info-box {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #667eea;
-}
-
-.info-box label {
-  display: block;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 10px;
-  font-size: 1rem;
-}
-
-.customer-name-input {
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box;
-}
-
-.customer-name-input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.info-text {
-  display: block;
-  color: #999;
-  font-size: 0.85rem;
-  margin-top: 8px;
-}
-
-/* Error Banner */
-.error-banner {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 15px 30px;
-  margin: 0 30px 20px;
-  border-radius: 5px;
-  border-left: 4px solid #dc3545;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Toolbar */
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 0 30px;
-  margin-bottom: 30px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  flex-wrap: wrap;
-}
-
-.search-filter-group {
-  display: flex;
-  gap: 15px;
-  flex: 1;
-  min-width: 200px;
-}
-
-.search-input,
-.filter-select {
-  padding: 12px 15px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  transition: border-color 0.3s ease;
-}
-
-.search-input {
-  flex: 1;
-  min-width: 150px;
-}
-
-.search-input:focus,
-.filter-select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-.btn-success {
-  background: #28a745;
-  color: white;
-}
-
-.btn-success:hover {
-  background: #218838;
-  transform: translateY(-2px);
-}
-
-/* Form Card */
+/* ===== FORM CARD ===== */
 .form-card {
   background: white;
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-  margin: 0 30px 30px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  border-left: 4px solid #667eea;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  margin: 0 auto 25px;
+  max-width: 1100px;
+  border-left: 5px solid #4f46e5;
 }
 
 .form-card h2 {
-  margin: 0 0 25px;
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.form-group {
   margin-bottom: 20px;
 }
 
+.form-group {
+  margin-bottom: 18px;
+}
+
 .form-group label {
-  display: block;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
+  margin-bottom: 6px;
+  display: block;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px;
   border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box;
+  border-radius: 6px;
+  transition: 0.3s;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
+  border-color: #4f46e5;
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
 }
 
 .form-group textarea {
-  resize: vertical;
-  min-height: 120px;
+  min-height: 110px;
 }
 
-/* Issues Section */
+/* ===== BUTTON ===== */
+.btn {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== ISSUES SECTION ===== */
+
 .issues-section {
-  padding: 0 30px 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.issues-section h2 {
-  margin: 0 0 25px;
-  color: #333;
-  font-size: 1.5rem;
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 20px;
 }
 
 .issues-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
   gap: 20px;
 }
 
-/* Issue Card */
+/* ===== ISSUE CARD ===== */
+
 .issue-card {
   background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #dc3545;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  transition: 0.25s;
+  border-left: 4px solid #ef4444;
 }
 
 .issue-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
-}
-
-.issue-header {
-  margin-bottom: 15px;
-}
-
-.issue-title-section {
-  margin-bottom: 12px;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 .issue-title-section h3 {
   margin: 0;
-  color: #333;
   font-size: 1.1rem;
 }
 
+/* ===== BADGES ===== */
+
 .badges {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-top: 10px;
   flex-wrap: wrap;
 }
 
 .badge {
-  display: inline-block;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 15px;
-  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 14px;
+  font-size: 12px;
   font-weight: 600;
-  white-space: nowrap;
+  color: white;
 }
 
-.badge-severity {
-  background: #ffc107;
-}
+/* Severity Colors */
+.badge-severity.LOW { background:#22c55e; }
+.badge-severity.MEDIUM { background:#f59e0b; }
+.badge-severity.HIGH { background:#ef4444; }
+.badge-severity.CRITICAL { background:#b91c1c; }
 
-.badge-status {
-  background: #0d6efd;
-}
+/* Status Colors */
+.badge-status.PENDING { background:#f59e0b; }
+.badge-status.IN_PROGRESS { background:#3b82f6; }
+.badge-status.COMPLETED { background:#22c55e; }
+.badge-status.CLOSED { background:#6b7280; }
 
-.issue-date {
-  color: #999;
-  font-size: 0.85rem;
-  text-align: right;
-}
-
-.issue-description {
-  margin: 15px 0;
-}
+/* ===== DESCRIPTION ===== */
 
 .issue-description p {
-  margin: 0;
-  color: #666;
-  line-height: 1.6;
+  margin: 12px 0;
+  color: #555;
+  line-height: 1.5;
 }
+
+/* ===== FOOTER ===== */
 
 .issue-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding-top: 15px;
+  margin-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid #eee;
+  font-size: 0.85rem;
+  color: #888;
 }
 
-.issue-footer small {
-  color: #999;
-  font-size: 0.8rem;
-}
+/* ===== STATS ===== */
 
-/* Stats Section */
 .stats-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  gap: 15px;
+  max-width: 1100px;
+  margin: 30px auto;
 }
 
 .stat-box {
   background: white;
-  padding: 25px;
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
-  border-top: 4px solid #667eea;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
 .stat-box h3 {
-  margin: 0 0 10px;
-  font-size: 2.5rem;
-  color: #667eea;
-}
-
-.stat-box p {
   margin: 0;
-  color: #666;
-  font-size: 0.95rem;
+  color: #4f46e5;
+  font-size: 2rem;
 }
 
-/* Empty State */
+/* ===== EMPTY STATE ===== */
+
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: 50px;
   color: #999;
 }
 
-.empty-state p {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
+/* ===== FORM ROW ===== */
+.form-row {
+  display: flex;
+  gap: 15px;
 }
 
-.empty-state small {
-  color: #bbb;
+.form-row .form-group {
+  flex: 1;
+}
+
+/* ===== TICKETS SECTION (TABLE) ===== */
+
+.tickets-section {
+  max-width: 1400px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.tickets-section h2 {
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.tickets-table thead {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+}
+
+.tickets-table th {
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.tickets-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.tickets-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.tickets-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table Cell Styles */
+.ticket-id {
+  font-weight: 700;
+  color: #4f46e5;
+  white-space: nowrap;
+}
+
+.date-cell {
+  white-space: nowrap;
+  color: #6b7280;
   font-size: 0.9rem;
 }
 
-/* Loading */
-.loading {
+.created-by-cell .user-info {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-  font-size: 1.1rem;
-  color: #666;
+  flex-direction: column;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .customer-header {
-    padding: 40px 20px;
+.created-by-cell .user-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.created-by-cell .user-email {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.subject-cell {
+  font-weight: 500;
+  color: #1f2937;
+  max-width: 200px;
+}
+
+.description-cell {
+  max-width: 250px;
+}
+
+.description-text {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Badges */
+.priority-badge,
+.severity-badge,
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px !important;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:768px){
+  .customer-header h1{
+    font-size:1.7rem;
   }
 
-  .header-content h1 {
-    font-size: 1.8rem;
-  }
-
-  .toolbar {
+  .form-row {
     flex-direction: column;
-    align-items: stretch;
   }
-
-  .search-filter-group {
-    flex-direction: column;
-  }
-
-  .search-input,
-  .filter-select {
-    width: 100%;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
-  .form-card,
-  .issues-section,
-  .stats-section,
-  .customer-info-section {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .issues-list {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-box {
-    padding: 20px;
-  }
-
-  .stat-box h3 {
-    font-size: 2rem;
+  
+  .tickets-table {
+    font-size: 0.85rem;
   }
 }

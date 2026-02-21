@@ -465,3 +465,14 @@ input[type="checkbox"] {
     font-size: 0.75rem;
   }
 }
+
+.ticket-id-link {
+  cursor: pointer;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.ticket-id-link:hover {
+  text-decoration: underline;
+}
+
