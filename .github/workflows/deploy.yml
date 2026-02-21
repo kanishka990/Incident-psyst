@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /root/incident-platform
+            cd /home/ubuntu/incident-platform
             docker pull ${{ secrets.DOCKER_USERNAME }}/incident-backend
             docker pull ${{ secrets.DOCKER_USERNAME }}/incident-frontend
             docker-compose down
