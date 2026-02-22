@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: CI-CD Deploy to EC2
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,17 +19,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Backend
+      - name: Build & Push Backend
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/incident-backend ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/incident-backend
 
-      - name: Build and Push Frontend
+      - name: Build & Push Frontend
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/incident-frontend ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/incident-frontend
 
-      - name: SSH and Deploy
+      - name: Deploy on EC2 via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_IP }}
