@@ -1,14 +1,27 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   backend:
     image: kanishka990/incident-backend:latest
     container_name: backend
     restart: always
+    env_file:
+      - .env
     ports:
       - "5000:5000"
-    environment:
-      - NODE_ENV=production
     depends_on:
       - postgres
 
@@ -20,17 +33,6 @@ services:
       - "80:80"
     depends_on:
       - backend
-
-  postgres:
-    image: postgres:15
-    container_name: postgres_i
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: test123
-      POSTGRES_DB: incidentdb
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
