@@ -1,58 +1,36 @@
-# ============================================
-# Simple Docker Compose - One Command Deploy
-# ============================================
-version: "3.9"
+version: "3.8"
 
 services:
+  backend:
+    image: kanishka990/incident-backend:latest
+    container_name: backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - postgres
+
+  frontend:
+    image: kanishka990/incident-frontend:latest
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
   postgres:
     image: postgres:15
-    container_name: incident_postgres
+    container_name: postgres_i
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: test123
       POSTGRES_DB: incidentdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - REACT_APP_API_URL=/api
-    image: kanishka990/incident-platform:latest
-    container_name: incident_app
-    ports:
-      - "80:80"
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=test123
-      - DB_NAME=incidentdb
-      - JWT_SECRET=your_secure_jwt_secret_here
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: always
 
 volumes:
   postgres_data:
-
-# ============================================
-# Deploy Commands:
-#
-# Build:   docker-compose -f docker-compose.simple.yaml build
-# Run:     docker-compose -f docker-compose.simple.yaml up -d
-# Push:    docker-compose -f docker-compose.simple.yaml push
-#
-# Or build and run together:
-# docker-compose -f docker-compose.simple.yaml up -d --build
-# ============================================
