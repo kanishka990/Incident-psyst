@@ -29,7 +29,7 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/incident-frontend ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/incident-frontend
 
-      - name: Deploy on EC2 via SSH
+      - name: Deploy on EC2
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -37,5 +37,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /home/ubuntu/incident-platform
-            docker-compose pull
-            docker-compose up -d
+            docker compose pull
+            docker compose up -d
