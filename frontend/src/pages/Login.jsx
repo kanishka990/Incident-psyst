@@ -2,53 +2,61 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./Auth.css";
 
 export default function Login(){
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [error,setError] = useState("");
+  const [loading,setLoading] = useState(false);
 
   const handleLogin = async (e)=>{
     e.preventDefault();
+    setError("");
+    
+    if (!email || !password) {
+      setError("All fields are required");
+      return;
+    }
+
+    setLoading(true);
 
     try {
+      // Use the api service which points to backend
+      const response = await api.post("/auth/login", { email, password });
+      
+      if (response.data.token) {
+        // Get user data from backend response
+        const userData = response.data.user;
+        
+        // Store token and user info
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", userData.role);
+        localStorage.setItem("userName", userData.email.split('@')[0]);
+        localStorage.setItem("userEmail", userData.email);
 
-      const res = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify({ email,password })
+        // Dispatch login with user info
+        dispatch(login({
+          user: { email: userData.email, name: userData.name, role: userData.role },
+          role: userData.role
+        }));
+
+        // Redirect based on ACTUAL role from database
+        if (userData.role === "developer" || userData.role === "admin") {
+          navigate("/developer-dashboard");
+        } else {
+          navigate("/customer");
         }
-      );
-
-      const data = await res.json();
-
-      if(!data.token){
-        setError(data.error);
-        return;
       }
-
-      localStorage.setItem("token",data.token);
-      localStorage.setItem("role",data.user.role);
-      localStorage.setItem("userName",data.user.name || data.user.email.split('@')[0]);
-      localStorage.setItem("userEmail",data.user.email);
-
-      dispatch(login(data.user));
-
-      if(data.user.role==="developer"){
-        navigate("/developer-dashboard");
-      }else{
-        navigate("/home");
-      }
-
-    } catch {
-      setError("Login failed");
+    } catch (err) {
+      const message = err.response?.data?.message || "Login failed. Please try again.";
+      setError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,8 +86,8 @@ export default function Login(){
             onChange={(e)=>setPassword(e.target.value)}
           />
 
-          <button className="main-btn">
-            🔐 Sign In
+          <button className="main-btn" disabled={loading}>
+            {loading ? "Logging in..." : "🔐 Sign In"}
           </button>
 
         </form>
