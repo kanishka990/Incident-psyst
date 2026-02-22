@@ -26,7 +26,7 @@ jobs:
 
       - name: Build & Push Frontend
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/incident-frontend ./frontend
+          docker build --build-arg REACT_APP_API_URL=/api -t ${{ secrets.DOCKER_USERNAME }}/incident-frontend ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/incident-frontend
 
       - name: Deploy on EC2
