@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./Auth.css";
 
 export default function Register() {
@@ -26,23 +27,14 @@ export default function Register() {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        "http://localhost:5000/api/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            role,
-          }),
-        }
-      );
+      const response = await api.post("/auth/register", {
+        name,
+        email,
+        password,
+        role,
+      });
 
-      const data = await res.json();
+      const data = response.data;
 
       if (data.error) {
         setError(data.error);
