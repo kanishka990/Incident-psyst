@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "./Auth.css";
 
 export default function Login(){
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [email,setEmail] = useState("");
@@ -14,8 +11,7 @@ export default function Login(){
   const [error,setError] = useState("");
   const [loading,setLoading] = useState(false);
 
-  const handleLogin = async (e)=>{
-    e.preventDefault();
+  const handleLogin = async () => {
     setError("");
     
     if (!email || !password) {
@@ -26,35 +22,25 @@ export default function Login(){
     setLoading(true);
 
     try {
-      // Use the api service which points to backend
-      const response = await api.post("/auth/login", { email, password });
+      const response = await api.post("/auth/login", {
+        email,
+        password
+      });
       
       if (response.data.token) {
-        // Get user data from backend response
-        const userData = response.data.user;
-        
-        // Store token and user info
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("role", userData.role);
-        localStorage.setItem("userName", userData.email.split('@')[0]);
-        localStorage.setItem("userEmail", userData.email);
+        localStorage.setItem("role", response.data.user.role);
+        localStorage.setItem("userName", response.data.user.email.split('@')[0]);
+        localStorage.setItem("userEmail", response.data.user.email);
 
-        // Dispatch login with user info
-        dispatch(login({
-          user: { email: userData.email, name: userData.name, role: userData.role },
-          role: userData.role
-        }));
-
-        // Redirect based on ACTUAL role from database
-        if (userData.role === "developer" || userData.role === "admin") {
+        if (response.data.user.role === "developer" || response.data.user.role === "admin") {
           navigate("/developer-dashboard");
         } else {
           navigate("/customer");
         }
       }
     } catch (err) {
-      const message = err.response?.data?.message || "Login failed. Please try again.";
-      setError(message);
+      setError(err.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -62,16 +48,13 @@ export default function Login(){
 
   return(
     <div className="auth-page">
-
       <div className="auth-card">
-
         <h1>🎫 Ticketing Login</h1>
         <p>Sign in to manage tickets</p>
 
         {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleLogin} className="auth-form">
-
+        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="auth-form">
           <input
             type="email"
             placeholder="Email Address"
@@ -89,23 +72,16 @@ export default function Login(){
           <button className="main-btn" disabled={loading}>
             {loading ? "Logging in..." : "🔐 Sign In"}
           </button>
-
         </form>
 
         <p className="forgot-link">
-          <span onClick={()=>navigate("/forgot-password")}>
-            Forgot Password?
-          </span>
+          <span onClick={()=>navigate("/forgot-password")}>Forgot Password?</span>
         </p>
 
         <p className="switch-link">
-          New user? <span onClick={()=>navigate("/register")}>
-            Create Account
-          </span>
+          New user? <span onClick={()=>navigate("/register")}>Create Account</span>
         </p>
-
       </div>
-
     </div>
   );
 }
