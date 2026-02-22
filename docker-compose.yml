@@ -13,6 +13,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   backend:
     image: kanishka990/incident-backend:latest
@@ -24,15 +26,23 @@ services:
       - "5000:5000"
     depends_on:
       - postgres
+    networks:
+      - app-network
 
   frontend:
-    image: kanishka990/incident-frontend:latest
+    build: ./frontend
     container_name: frontend
     restart: always
     ports:
       - "80:80"
     depends_on:
       - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:
