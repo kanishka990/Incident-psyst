@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { register } from "../services/authService";
 import "./Auth.css";
 
 export default function Register() {
@@ -13,12 +13,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  /* ===============================
-     REGISTER FUNCTION
-  =============================== */
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
+  const handleRegister = async () => {
     if (!name || !email || !password) {
       setError("All fields required");
       return;
@@ -27,13 +22,7 @@ export default function Register() {
     try {
       setLoading(true);
 
-      const response = await api.post("/auth/register", {
-        name,
-        email,
-        password,
-        role,
-      });
-
+      const response = await register(name, email, password, role);
       const data = response.data;
 
       if (data.error) {
@@ -43,12 +32,11 @@ export default function Register() {
       }
 
       alert("🎉 Account Created Successfully");
-
       navigate("/login", { replace: true });
 
     } catch (err) {
       console.error(err);
-      setError("Register failed");
+      setError(err.response?.data?.error || "Register failed");
     } finally {
       setLoading(false);
     }

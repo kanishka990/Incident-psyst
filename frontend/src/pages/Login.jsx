@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { login } from "../services/authService";
 import "./Auth.css";
 
 export default function Login(){
@@ -22,10 +22,7 @@ export default function Login(){
     setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", {
-        email,
-        password
-      });
+      const response = await login(email, password);
       
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
