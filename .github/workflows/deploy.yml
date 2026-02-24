@@ -1,0 +1,52 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 22
+          script: |
+            echo "🚀 Starting Deployment..."
+
+            # Go to home directory
+            cd /home/ubuntu/incident-platform
+
+            # If project does not exist, clone it
+            if [ ! -d "incident-platform" ]; then
+              echo "Cloning repository..."
+              git clone https://github.com/${{ github.repository }} incident-platform
+            fi
+
+            # Go inside project
+            cd incident-platform
+
+            # Reset any local changes
+            git fetch origin
+            git reset --hard origin/main
+
+            # Stop existing containers
+            docker compose down
+
+            # Remove unused images
+            docker system prune -af
+
+            # Build and start containers
+            docker compose up -d --build
+
+            echo "✅ Deployment Completed Successfully!"
