@@ -1,13 +1,20 @@
+# Backend Dockerfile
 FROM node:18-alpine
 
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
+RUN npm install
 
-RUN npm install 
-
+# Copy source code
 COPY . .
 
+# Create uploads directory
+RUN mkdir -p uploads
+
+# Expose port
 EXPOSE 5000
 
-CMD ["npm", "start"]
+# Start the server
+CMD ["node", "src/server.js"]

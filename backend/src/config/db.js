@@ -25,10 +25,12 @@ if (process.env.NODE_ENV === "development") {
 
 const resolvedHost = process.env.DB_HOST === "localhost" || !process.env.DB_HOST
   ? "127.0.0.1"
+  : process.env.DB_HOST === "host.docker.internal"
+  ? "host.docker.internal"
   : process.env.DB_HOST;
   
 export const pool = new Pool({
-  host: process.env.DB_HOST,
+  host: resolvedHost,
   port: 5432,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD || undefined,

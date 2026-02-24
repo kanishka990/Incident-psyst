@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Node modules (will be installed in container)
+node_modules
+
+# Build outputs
+build
+dist
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Environment files (use .env.example instead)
+.env
+.env.local
+.env.*.local
+
+# Test files
+coverage
+*.test.js
+*.spec.js
+__tests__
+
+# Documentation
+README.md
+docs
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
