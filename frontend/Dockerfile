@@ -1,6 +1,6 @@
 # Frontend Dockerfile - Multi-stage build for React app with Nginx
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
