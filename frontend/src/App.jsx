@@ -4,7 +4,6 @@ import Incidents from "./pages/Incidents";
 import Services from "./pages/Services";
 import Updates from "./pages/Updates";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import InternalDashboard from "./pages/InternalDashboard";
 import CustomerReportIssue from "./pages/CustomerReportIssue";
 import CustomerIncidentManagement from "./pages/CustomerIncidentManagement";
@@ -21,7 +20,14 @@ function App() {
       <Navbar /> {/* UI buttons */}
 
       <Routes>
-        <Route path="/" element={<Navigate to="/login/customer" replace />} />
+        <Route
+  path="/"
+  element={
+    localStorage.getItem("token")
+      ? <Navigate to="/customer" replace />
+      : <Navigate to="/login/customer" replace />
+  }
+/>
         <Route path="/incidents" element={<Incidents />} />
         <Route path="/customer-incidents" element={<Incidents />} />
         <Route path="/services" element={<Services />} />
@@ -31,7 +37,7 @@ function App() {
         <Route path="/login/developer" element={<Login roleType="developer" />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<InternalDashboard />} />
+        <Route path="/Dashboard" element={<InternalDashboard />} />
         <Route path="/developer-dashboard" element={<InternalDashboard />} />
         <Route path="/customer" element={<CustomerIncidentManagement />} />
         <Route path="/customer-report" element={<CustomerReportIssue />} />

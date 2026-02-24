@@ -179,6 +179,23 @@ app.get("/api/health", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+
+// ✅ CREATE USERS TABLE IF NOT EXISTS
+pool.query(`
+  CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role VARCHAR(20) DEFAULT 'customer',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`).then(() => {
+  console.log('Users table ready');
+}).catch(err => {
+  console.error('Error creating users table:', err.message);
+});
+
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

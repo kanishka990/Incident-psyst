@@ -4,10 +4,7 @@ import axios from "axios";
    AXIOS INSTANCE
 =============================== */
 const api = axios.create({
-  baseURL:
-    process.env.REACT_APP_API_URL ||
-    "http://localhost:5000/api",
-
+  baseURL: process.env.REACT_APP_API_URL,  // 👈 from .env
   headers: {
     "Content-Type": "application/json",
   },
@@ -15,25 +12,22 @@ const api = axios.create({
 
 /* ===============================
    REQUEST INTERCEPTOR
-   (AUTO HEADERS)
 =============================== */
 api.interceptors.request.use(
   (config) => {
-
     // TOKEN
     const token = localStorage.getItem("token");
 
     if (token) {
-      config.headers.Authorization =
-        `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // 🔥 ROLE + USER (important)
-    config.headers.role =
-      localStorage.getItem("role");
+    // ROLE + USER (optional)
+    const role = localStorage.getItem("role");
+    const userEmail = localStorage.getItem("userEmail");
 
-    config.headers.user =
-      localStorage.getItem("userEmail");
+    if (role) config.headers.role = role;
+    if (userEmail) config.headers.user = userEmail;
 
     return config;
   },
@@ -45,14 +39,10 @@ api.interceptors.request.use(
 =============================== */
 api.interceptors.response.use(
   (response) => response,
-
   (error) => {
-
     // AUTO LOGOUT IF TOKEN EXPIRED
     if (error.response?.status === 401) {
       localStorage.clear();
-
-      // redirect safely
       window.location.href = "/login";
     }
 

@@ -71,6 +71,15 @@ function App() {
 
         {/* DEVELOPER */}
         <Route
+          path="/developer"
+          element={
+            isAuthenticated && role === "developer"
+              ? <DeveloperIncidentManagement />
+              : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route
           path="/developer-dashboard"
           element={
             isAuthenticated && role === "developer"

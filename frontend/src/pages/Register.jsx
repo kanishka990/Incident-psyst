@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../services/authService";
+import axios from "axios";
 import "./Auth.css";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Register() {
   const navigate = useNavigate();
@@ -22,7 +24,13 @@ export default function Register() {
     try {
       setLoading(true);
 
-      const response = await register(name, email, password, role);
+      // Direct axios.post call for registration
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
+        name,
+        email,
+        password,
+        role       // "customer" or "developer"
+      });
       const data = response.data;
 
       if (data.error) {

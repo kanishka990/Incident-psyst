@@ -11,11 +11,28 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   /* ===== GET FROM LOCAL STORAGE ===== */
-  const storedUser =
-    localStorage.getItem("userName") || user;
+  // Handle user from either localStorage (string) or Redux (object)
+  const getUserName = () => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) return storedName;
+    if (user && typeof user === "object" && user.name) return user.name;
+    if (typeof user === "string") return user;
+    return null;
+  };
+
+  const storedUser = getUserName();
 
   const storedRole =
-    localStorage.getItem("role") || role;
+    localStorage.getItem("role") || (role && typeof role === "object" ? role.name : role) || "Customer";
+
+  // Determine home page based on role
+  const getHomePath = () => {
+    const userRole = storedRole?.toLowerCase();
+    if (userRole === "developer" || userRole === "admin") {
+      return "/developer-incidents";
+    }
+    return "/customer";
+  };
 
   const storedEmail =
     localStorage.getItem("userEmail") || "email";
@@ -27,8 +44,10 @@ const Navbar = () => {
   };
 
   const getInitials = (name) => {
-    if (!name) return "?";
-    return name.charAt(0).toUpperCase();
+    if (!name || typeof name !== "string") return "?";
+    const trimmed = name.trim();
+    if (!trimmed) return "?";
+    return trimmed.charAt(0).toUpperCase();
   };
 
   return (
@@ -73,7 +92,7 @@ const Navbar = () => {
                 
               
 
-                <Link to="/home" className="dropdown-item" onClick={() => setShowDropdown(false)}>
+                <Link to={getHomePath()} className="dropdown-item" onClick={() => setShowDropdown(false)}>
                   🏠 Home
                 </Link>
                 

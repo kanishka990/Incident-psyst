@@ -28,8 +28,8 @@ const resolvedHost = process.env.DB_HOST === "localhost" || !process.env.DB_HOST
   : process.env.DB_HOST;
   
 export const pool = new Pool({
-  host: resolvedHost,
-  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 5432,
+  host: process.env.DB_HOST,
+  port: 5432,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD || undefined,
   database: process.env.DB_NAME,

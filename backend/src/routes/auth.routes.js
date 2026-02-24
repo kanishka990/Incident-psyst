@@ -5,7 +5,7 @@ import {
   forgotPassword, 
   resetPassword,
   getProfile,
-  updateProfile,
+  // updateProfile
   getDevelopers,
   getAllUsers
 } from "../controllers/auth.controller.js";
@@ -29,7 +29,7 @@ router.post("/reset-password", resetPassword);
 router.get("/profile", authenticateToken, getProfile);
 
 // Update user profile (protected)
-router.put("/profile", authenticateToken, updateProfile);
+// router.put("/profile", authenticateToken, updateProfile);
 
 // Get all developers (for assignee selection)
 router.get("/developers", authenticateToken, getDevelopers);
